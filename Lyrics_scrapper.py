@@ -17,6 +17,7 @@ def request_artist_info(artist_name, page):
     data = {'q': artist_name}
     response = requests.get(search_url, data=data, headers=headers)
     return response
+
 # Get Genius.com song url's from artist object
 def request_song_url(artist_name, song_cap):
     page = 1
@@ -25,9 +26,11 @@ def request_song_url(artist_name, song_cap):
     while True:
         response = request_artist_info(artist_name, page)
         json = response.json()
+        # print(json)
         # Collect up to song_cap song objects from artist
         song_info = []
         for hit in json['response']['hits']:
+
             if artist_name.lower() in hit['result']['primary_artist']['name'].lower():
                 song_info.append(hit)
     
@@ -46,8 +49,37 @@ def request_song_url(artist_name, song_cap):
     return songs
     
 # DEMO
-songs_url = request_song_url('Lana Del Rey', 2)
+songs_url = request_song_url('Ed Sheeran', 1)
 
+def request_song_url_by_song_name(song, song_cap):
+    page = 1
+    songs = []
+    
+    while True:
+        response = request_artist_info(song, page)
+        json = response.json()
+        # print(len(json['response']['hits']))
+        # print(json)
+        # Collect up to song_cap song objects from artist
+        song_info = []
+        for hit in json['response']['hits']:
+            if song.lower() in hit['result']['title'].lower():
+                song_info.append(hit)
+        # print(len(song_info))
+        # Collect song URL's from song objects
+        for song in song_info:
+            if (len(songs) < song_cap):
+                url = song['result']['url']
+                songs.append(url)
+        if (len(songs) == song_cap):
+            break
+        else:
+            page += 1
+        
+    print('Found')
+    return songs
+songs_url1 = request_song_url_by_song_name('Shape of You', 1)
+print(songs_url,songs_url1)
 # Scrape lyrics from a Genius.com song URL
 def scrape_song_lyrics(url):
     page = requests.get(url)
@@ -67,4 +99,5 @@ def scrape_song_lyrics(url):
     lyrics = os.linesep.join([s for s in lyrics.splitlines() if s])         
     return lyrics
 # DEMO
-print(scrape_song_lyrics(songs_url[0]))
+# print(scrape_song_lyrics(songs_url[0]))
+print(scrape_song_lyrics(songs_url1[0]))
