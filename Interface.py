@@ -6,12 +6,13 @@ import os
 import re
 
 from Scrap_Lyrics_URL import song_lyrics
-from speech_enabled import *
+from speech_enabled import get_input
 
-# Artist
-Audio_Input = speech_input_check()
-if(not Audio_Input):
-    print("Audio input couldn't be connected. Please make sure to install SpeechRecognition module and PyAudio to use search by speech option.")
 
-Song = input("Enter the song : ")
+print("Speak Out! We are listening!")
+
+# Check if user has microphone access and take input from text if not.
+Song = get_input()
+
+print("\nThese are the top 10 songs found:\n")
 song_lyrics(Song)
