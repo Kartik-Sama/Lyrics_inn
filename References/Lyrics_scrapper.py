@@ -93,6 +93,7 @@ def scrape_song_lyrics(url):
     elif lyrics1 == lyrics2 == None:
         lyrics = None
         return "Lyrics not found. Please check the song name and title."
+    print(lyrics)
     #remove identifiers like chorus, verse, etc
     lyrics = re.sub(r'[\(\[].*?[\)\]]', '\n', lyrics)
     #remove empty lines
@@ -100,4 +101,4 @@ def scrape_song_lyrics(url):
     return lyrics
 # DEMO
 # print(scrape_song_lyrics(songs_url[0]))
-print(scrape_song_lyrics(songs_url1[0]))
+print(scrape_song_lyrics(songs_url[0]))
