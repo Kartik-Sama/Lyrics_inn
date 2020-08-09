@@ -14,5 +14,4 @@ print("Speak Out! We are listening!")
 # Check if user has microphone access and take input from text if not.
 Song = get_input()
 
-print("\nThese are the top 10 songs found:\n")
 song_lyrics(Song)

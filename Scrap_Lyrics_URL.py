@@ -17,22 +17,26 @@ def request_song_info(song_name, page):
     data = {'q': song_name}
     response = requests.get(search_url, data=data, headers=headers)
     return response
+
 # Get Genius.com song url's from artist object
-def request_song_url(song_name, song_cap=10):
+def request_song_url(song_name, song_cap=9):
     page = 1
     songs = []
     
+    i = 1
     while True:
         response = request_song_info(song_name, page)
         json = response.json()
         # Collect up to song_cap song objects from artist
         song_info = []
+        top_songs = []
         for hit in json['response']['hits']:
             songTitle = hit['result']['full_title']
             for s in song_name.lower():
                 if s in songTitle:
-                    print_top_results(songTitle, hit)
+                    top_songs.append(top_results(songTitle, hit))
                     song_info.append(hit)
+                    i += 1
                     break
     
         # Collect song URL's from song objects
@@ -45,30 +49,46 @@ def request_song_url(song_name, song_cap=10):
             break
         else:
             page += 1
-        
-    return songs
+            print("Added!")
+    return songs, top_songs
 
 
-def print_top_results(songTitle, hit):
+def top_results(songTitle, hit):
     songTitle = songTitle.lstrip()
     songTitle = (songTitle[:57]+"...") if len(songTitle) > 60 else songTitle
-    print(songTitle, (65-len(songTitle))*" ", "-", 10*" ", hit['result']['primary_artist']['name'])
+    res = songTitle + (65-len(songTitle))*" " + "-" + 8*" " + hit['result']['primary_artist']['name']
+    return res
 
 def song_lyrics(song):
-    songs_url = request_song_url(song)
-    url = songs_url[0]
-    page = requests.get(url)
-    html = BeautifulSoup(page.text, 'html.parser')
-    lyrics1 = html.find("div", class_="lyrics")
-    lyrics2 = html.find("div", class_="Lyrics__Container-sc-1ynbvzw-2 jgQsqn")
-    if lyrics1:
-        lyrics = lyrics1.get_text()
-    elif lyrics2:
-        lyrics = lyrics2.get_text()
-    elif lyrics1 == lyrics2 == None:
-        lyrics = None
+    songs_url, top_songs = request_song_url(song)
+
+    print("\nThese are the top 9 results for your search:\n")
+    for i in range(9):
+        print(i+1, top_songs[i])
+    
+    choice = int(input("\nWhich one did you mean?\n"))
+    url = songs_url[choice-1]
+
+    lyrics = None
+    while lyrics is None:    
+        page = requests.get(url)
+        html = BeautifulSoup(page.text, 'html.parser')
+        lyrics = html.find("div", class_="lyrics")
+
+    lyrics = lyrics.get_text()
+    #lyrics2 = html.find("div", class_="Lyrics__Container-sc-1ynbvzw-2 jgQsqn")
+ 
+    # elif lyrics2:
+    #     lyrics = lyrics2.get_text()
+    # elif lyrics1 == lyrics2 == None:
+    #     lyrics = None
     #remove identifiers like chorus, verse, etc
     lyrics = re.sub(r'[\(\[].*?[\)\]]', '\n', lyrics)
     #remove empty lines
-    lyrics = os.linesep.join([s for s in lyrics.splitlines() if s])         
-    #print(lyrics)
+    lyrics = os.linesep.join([s for s in lyrics.splitlines() if s])
+
+    print("\nSong: ", top_songs[choice-1][:30])
+    print("Artist: ", top_songs[choice-1][74:])
+
+    print("\nHere are the lyrics. ENJOY!!!\n\n")
+    print(lyrics)
