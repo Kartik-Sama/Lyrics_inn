@@ -62,12 +62,21 @@ def top_results(songTitle, hit):
 def song_lyrics(song):
     songs_url, top_songs = request_song_url(song)
 
-    print("\nThese are the top 9 results for your search:\n")
-    for i in range(9):
+    print("\nThese are the top", len(songs_url), "results for your search:\n")
+    for i in range(len(songs_url)):
         print(i+1, top_songs[i])
     
-    choice = int(input("\nWhich one did you mean?\n"))
-    url = songs_url[choice-1]
+    try:
+        choice = int(input("\nWhich one did you mean?\n"))
+    except ValueError:
+        print("Entry must be an integer.")
+        return
+
+    try:
+        url = songs_url[choice-1]
+    except IndexError:
+        print("Sorry your specified input is not in the list.")
+        return
 
     lyrics = None
     while lyrics is None:    
