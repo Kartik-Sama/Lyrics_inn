@@ -1,25 +1,24 @@
 import speech_recognition
-
+import sys
 import os
 
-def speech_input_check():
-    try:
-        sys.stdout = open(os.devnull, 'w')
-        speech_recognition.Recognizer()
-        speech_recognition.Microphone()
-        sys.stdout = sys.__stdout__
-        return True
-    except:
-        return False
 
-def speech_user_input():
-    # DEMO
-    recognizer = speech_recognition.Recognizer()
-    
-    with speech_recognition.Microphone() as source:
-        print("Speak up we are listening")
-        audio = recognizer.listen(source)
-    myinp = recognizer.recognize_google(audio)
-    print("Google Speech Recognition thinks you said:",myinp)
+def get_input():
+
+    try:
+        recognizer = speech_recognition.Recognizer()
+        sys.stdout = open(os.devnull, 'w')
+        with speech_recognition.Microphone() as source:
+            audio = recognizer.listen(source)
+            myinp = recognizer.recognize_google(audio)
+        sys.stdout = sys.__stdout__        
+
+        print("\nGoogle Speech Recognition thinks you said:")
+        print(myinp)
+
+    except:
+        sys.stdout = sys.__stdout__
+        print("\nERROR!!!\nCould not detect sound/microphone! Please enter the song name using keyboard:")
+        myinp = input()
+        
     return myinp
-    
