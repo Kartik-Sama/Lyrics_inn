@@ -15,3 +15,4 @@ if(not Audio_Input):
 
 Song = input("Enter the song : ")
 song_lyrics(Song)
+speech_user_input()
