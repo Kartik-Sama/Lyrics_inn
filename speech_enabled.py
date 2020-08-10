@@ -6,9 +6,11 @@ from ctypes import *
 ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
 def py_error_handler(filename, line, function, err, fmt):
   print("",end="")
-c_error_handler = ERROR_HANDLER_FUNC(py_error_handler)
-asound = cdll.LoadLibrary('libasound.so')
-asound.snd_lib_error_set_handler(c_error_handler)
+
+if sys.platform == "linux" or sys.platform == "linux2":
+    c_error_handler = ERROR_HANDLER_FUNC(py_error_handler)
+    asound = cdll.LoadLibrary('libasound.so')
+    asound.snd_lib_error_set_handler(c_error_handler)
 
 def get_input():
     
@@ -21,11 +23,16 @@ def get_input():
             myinp = recognizer.recognize_google(audio)
             print("\nGoogle Speech Recognition thinks you said:")
             print(myinp)
-    except LookupError:
-        print("ERROR: Couldn't recognize what you said!")
-        mpinp = input("Please enter the song name using keyboard : ")
     except OSError:
-        print("ERROR: Could not detect connect to microphone!")
-        myinp = input("Please enter the song name using keyboard : ")
+        print("\nERROR: Could not detect connect to microphone!")
+        myinp = input("Please enter the song name using keyboard :\n")
+
+    except speech_recognition.UnknownValueError:
+        print("\nERROR: Couldn't recognize what you said!")
+        myinp = input("Please enter the song name using keyboard :\n")
+    
+    except Exception as e:
+        print("\n", e, sep='\n')
+        myinp = input("Please enter the song name using keyboard :\n")
         
     return myinp
