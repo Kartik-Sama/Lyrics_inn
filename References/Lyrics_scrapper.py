@@ -1,10 +1,6 @@
-# Make HTTP requests
 import requests
-# Scrape data from an HTML document
 from bs4 import BeautifulSoup
-# I/O
 import os
-# Search and manipulate strings
 import re
 
 GENIUS_API_TOKEN = 'NN3ws9rZorqMaFGlHNmeUR7RjtaWirQBrB8n5EmTBQUe_K-JALxgu-ArM8zAMyJ9'

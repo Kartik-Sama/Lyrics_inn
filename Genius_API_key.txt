@@ -1,5 +1,0 @@
-Client Id , zVgvHj8TkQGO1o6cQ5EryuJPrwnBJKz2lkRslXjtZ68CpZfYi82S1s36RTlWUwCd
-Client Secret , MuwFhqUC42KfLyrD_liCHfB_9qzqZjLD3rQAvizJtOFkvhi7c8DIHk46v1IssiS0rBcVC--7G8K1ZNYZ5pATVg
-
-id : 10225867
-Authentication Bearer : NN3ws9rZorqMaFGlHNmeUR7RjtaWirQBrB8n5EmTBQUe_K-JALxgu-ArM8zAMyJ9

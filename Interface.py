@@ -1,10 +1,3 @@
-# Make HTTP requests
-import requests
-# I/O
-import os
-# Search and manipulate strings
-import re
-
 from Scrap_Lyrics_URL import song_lyrics
 from speech_enabled import get_input
 
