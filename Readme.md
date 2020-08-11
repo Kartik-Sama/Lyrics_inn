@@ -1,12 +1,12 @@
 # Lyrics Inn
 
 In this project we aim to bring the experience of a song and it's lyrics closer.
----
+
 
 ## Progress
 
 We have used the *Genius API* to retrrive lyrics of a song with it's name as input. For input, if a microphone is detected we can also take input as your voice over typing the song name.
----
+
 
 ## Dependencies
 * SpeechRecognition [(docs)](https://pypi.org/project/SpeechRecognition/)
@@ -14,7 +14,7 @@ We have used the *Genius API* to retrrive lyrics of a song with it's name as inp
 * Requests [(docs)](https://pypi.org/project/requests/)
 ---
 
-## Authors :raised_hand:
+## Authors :raised_hands:
 * Anuraag Marapally @A-X-E-lrod
 * Sama Sai Karthik @Kartik-Sama
 
